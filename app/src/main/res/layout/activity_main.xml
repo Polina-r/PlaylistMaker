@@ -39,10 +39,10 @@
         android:textColor="@color/text_color"
         app:icon="@drawable/search"
         app:iconGravity="textStart"
-        app:iconPadding="16dp"
+        app:iconPadding="@dimen/iconPadding"
         app:iconTint="@color/text_color"
         app:background="@color/white"
-        app:cornerRadius="16dp"/>
+        app:cornerRadius="@dimen/cornerRadius"/>
 
     <Button
         android:id="@+id/library_button"
@@ -58,10 +58,10 @@
         android:textColor="@color/text_color"
         app:icon="@drawable/library"
         app:iconGravity="textStart"
-        app:iconPadding="16dp"
+        app:iconPadding="@dimen/iconPadding"
         app:iconTint="@color/text_color"
         app:background="@color/white"
-        app:cornerRadius="16dp"/>
+        app:cornerRadius="@dimen/cornerRadius"/>
 
     <Button
         android:id="@+id/settings_button"
@@ -78,9 +78,9 @@
         android:textColor="@color/text_color"
         app:icon="@drawable/settings"
         app:iconGravity="textStart"
-        app:iconPadding="16dp"
+        app:iconPadding="@dimen/iconPadding"
         app:iconTint="@color/text_color"
         app:background="@color/white"
-        app:cornerRadius="16dp"/>
+        app:cornerRadius="@dimen/cornerRadius"/>
 
 </LinearLayout>

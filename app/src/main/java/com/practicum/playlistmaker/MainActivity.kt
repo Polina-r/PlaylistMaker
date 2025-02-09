@@ -1,9 +1,11 @@
 package com.practicum.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,17 +23,22 @@ class MainActivity : AppCompatActivity() {
         val libraryButton = findViewById<Button>(R.id.library_button)
         val settingsButton = findViewById<Button>(R.id.settings_button)
 
-        val imageClickListener: View.OnClickListener = object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(this@MainActivity, "Нажали на картинку!", Toast.LENGTH_SHORT).show()
-            }
+        searchButton.setOnClickListener {
+            val searchDisplayIntent = Intent(this, SearchActivity::class.java)
+            startActivity(searchDisplayIntent)
         }
         libraryButton.setOnClickListener {
-            Toast.makeText(this@MainActivity, "Нажали на картинку!", Toast.LENGTH_SHORT).show()
+            val libraryDisplayIntent = Intent(this, LibraryActivity::class.java)
+            startActivity(libraryDisplayIntent)
         }
-        searchButton.setOnClickListener(imageClickListener)
-        settingsButton.setOnClickListener(imageClickListener)
 
+        //Во домашнем задании N2 было указано использовать два разных способа и исправить только после проверки, поэтому эта кнопка реализована следующим образом (Toast удален, но есть в предыдущем commit).
+        settingsButton.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                val libraryDisplayIntent = Intent(this@MainActivity, SettingsActivity::class.java)
+                startActivity(libraryDisplayIntent)
+            }
+        })
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
