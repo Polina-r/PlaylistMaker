@@ -6,10 +6,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/main_background"
-    android:paddingTop="10dp">
+    android:paddingTop="12dp">
     <!--android:paddingLeft="12dp">-->
 
-    <FrameLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/main_background"
+        android:elevation="0dp"
+        app:title="@string/app_name"
+        app:titleTextAppearance="@style/ToolbarMainTitleStyle"
+        app:titleTextColor="@color/white"/>
+
+    <!--<FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -23,7 +33,7 @@
             android:paddingLeft="12dp"
             android:paddingTop="10dp"/>
 
-    </FrameLayout>
+    </FrameLayout>-->
 
     <Button
         android:id="@+id/search_button"

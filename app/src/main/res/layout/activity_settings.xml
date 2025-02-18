@@ -2,15 +2,27 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_container"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
-    android:padding="20dp">
+    android:paddingHorizontal="16dp">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="0dp"
+        android:background="@color/white"
+        app:title="@string/settings"
+        app:navigationIcon="@drawable/arrow"
+        app:titleTextAppearance="@style/ToolbarSettingsTitleStyle"/>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -36,16 +48,26 @@
         android:textSize="22sp"
         android:textStyle="bold"/>
 
-        </LinearLayout>
+        </LinearLayout>-->
 
 
-<LinearLayout
+<!--<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="80dp"
-    android:orientation="vertical">
+    android:layout_marginTop="32dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp">-->
 
-    <LinearLayout
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="0dp"
+        android:paddingVertical="20dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/dark_theme"
+        android:textSize="16sp"/>
+    <!--<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -68,38 +90,41 @@
         android:checked="false"
         tools:ignore="UseSwitchCompatOrMaterialXml"/>
 
-        </LinearLayout>
+        </LinearLayout>-->
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="64dp"
         android:drawableEnd="@drawable/share"
         android:gravity="center_vertical"
         android:paddingEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/app_share"
         android:textColor="@color/text_color"
         android:textSize="16sp" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="64dp"
         android:drawableEnd="@drawable/support"
         android:gravity="center_vertical"
         android:paddingEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/support"
         android:textColor="@color/text_color"
         android:textSize="16sp" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="64dp"
         android:drawableEnd="@drawable/arrow_forward"
         android:gravity="center_vertical"
         android:paddingEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/user_agreement"
         android:textColor="@color/text_color"
         android:textSize="16sp"/>
 
-</LinearLayout>
+<!--</LinearLayout>-->
 
 </LinearLayout>
