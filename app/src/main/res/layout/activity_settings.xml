@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_container"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        app:title="@string/settings"
+        app:navigationIcon="@drawable/arrow"
+        app:titleTextAppearance="@style/ToolbarSettingsTitleStyle"/>
+
+    <!--<LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="0dp"
+        tools:ignore="RtlSymmetry">
+
+        <Button
+            android:id="@+id/arrow_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:icon="@drawable/arrow"
+            app:iconTint="#1A1B22"
+            android:background="@android:color/transparent"
+            android:elevation="0dp"
+            android:paddingStart="0dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        android:textColor="@color/text_color"
+        android:textSize="22sp"
+        android:textStyle="bold"/>
+
+        </LinearLayout>-->
+
+
+<!--<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="32dp"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp">-->
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="@string/dark_theme"
+        android:textSize="16sp"
+        android:thumbTint="@color/switch_thumb_color"
+        android:trackTint="@color/switch_track_color"/>
+    <!--<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/dark_theme"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"/>
+
+        <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:checked="false"
+        tools:ignore="UseSwitchCompatOrMaterialXml"/>
+
+        </LinearLayout>-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="@string/app_share"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        app:drawableEndCompat="@drawable/share"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="@string/support"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        app:drawableEndCompat="@drawable/support" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="@string/user_agreement"
+        android:textColor="@color/text_color"
+        android:textSize="16sp"
+        app:drawableEndCompat="@drawable/arrow_forward" />
+
+<!--</LinearLayout>-->
+
+</LinearLayout>
