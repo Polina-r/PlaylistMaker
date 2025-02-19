@@ -8,15 +8,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white"
-    android:paddingHorizontal="16dp">
+    android:background="@color/white">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="0dp"
         android:background="@color/white"
         app:title="@string/settings"
         app:navigationIcon="@drawable/arrow"
@@ -62,11 +59,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingHorizontal="0dp"
-        android:paddingVertical="20dp"
-        android:layout_marginStart="8dp"
+        android:padding="16dp"
         android:text="@string/dark_theme"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:thumbTint="@color/switch_thumb_color"
+        android:trackTint="@color/switch_track_color"/>
     <!--<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -95,35 +92,32 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:drawableEnd="@drawable/share"
         android:gravity="center_vertical"
-        android:paddingEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:padding="16dp"
         android:text="@string/app_share"
         android:textColor="@color/text_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:drawableEndCompat="@drawable/share"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:drawableEnd="@drawable/support"
         android:gravity="center_vertical"
-        android:paddingEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:padding="16dp"
         android:text="@string/support"
         android:textColor="@color/text_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:drawableEndCompat="@drawable/support" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:drawableEnd="@drawable/arrow_forward"
         android:gravity="center_vertical"
-        android:paddingEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:padding="16dp"
         android:text="@string/user_agreement"
         android:textColor="@color/text_color"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        app:drawableEndCompat="@drawable/arrow_forward" />
 
 <!--</LinearLayout>-->
 
