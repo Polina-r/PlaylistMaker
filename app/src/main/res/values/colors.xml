@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="text_color">#1A1B22</color>
     <color name="main_background">#3772E7</color>
+    <color name="child_pages_background">#FFFFFFFF</color>
     <color name="light_icons">#AEAFB4</color>
     <color name="switch_thumb_active_color">#3772E7</color>
     <color name="switch_thumb_inactive_color">#AEAFB4</color>

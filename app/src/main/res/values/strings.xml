@@ -1,10 +1,26 @@
 <resources>
+    <!-- Названия для Toolbar-->
     <string name="app_name">Playlist Maker</string>
     <string name="settings">Настройки</string>
+
+    <!--Названия кнопок на MainActivity-->
+    <string name="search">Поиск</string>
+    <string name="library">Медиатека</string>
+
+    <!--Названия функций на SettingsActivity-->
     <string name="dark_theme">Темная тема</string>
     <string name="app_share">Поделиться приложением</string>
     <string name="support">Написать в поддержку</string>
     <string name="user_agreement">Пользовательское соглашение</string>
-    <string name="search">Поиск</string>
-    <string name="library">Медиатека</string>
+
+    <!--Сообщения для Toast-->
+    <string name="email_client_not_found">Почтовый клиент не найден</string>
+    <string name="browser_not_found">Не удаётся открыть браузер</string>
+
+    <!--Текст для писем-->
+    <string name="email_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="email_body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+
+    <!--URL для пользовательского соглашения-->
+    <string name="user_agreement_url">https://yandex.ru/legal/practicum_offer/</string>
 </resources>

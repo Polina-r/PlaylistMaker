@@ -1,12 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ToolbarSettingsTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+
+    // Toolbar
+    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">22sp</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    // Switch
+    <style name="SwitchTextStyle" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_color</item>
     </style>
 
-    <style name="ToolbarMainTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    // Кнопки
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginHorizontal">16dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">22sp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/iconPadding</item>
+        <item name="iconTint">@color/text_color</item>
+        <item name="background">@color/white</item>
+        <item name="cornerRadius">@dimen/cornerRadius</item>
+    </style>
+
+    // Кнопки с текстом
+    <style name="SettingsFeaturesStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    // Строка поиска
+    <style name="SearchHintStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">48dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">?attr/hintTextColor</item>
+        <item name="android:textColorHint">?attr/hintTextColor</item>
+        <item name="android:textCursorDrawable">@drawable/custom_cursor</item>
+        <item name="android:gravity">start|center_vertical</item>
     </style>
 
 </resources>
