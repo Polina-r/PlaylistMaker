@@ -65,7 +65,7 @@ class SettingsActivity: AppCompatActivity() {
             val shareButton = findViewById<MaterialTextView>(R.id.shareButton)
 
         shareButton.setOnClickListener {
-            val message = "https://practicum.yandex.ru/profile/android-developer-plus/"
+            val message = getString(R.string.course_link)
             shareText(message)
        }
 
@@ -116,7 +116,7 @@ class SettingsActivity: AppCompatActivity() {
     //Функция "Пользовательское соглашение"
     @SuppressLint("QueryPermissionsNeeded")
     private fun openAgreement() {
-        val userAgreementUrl = "https://yandex.ru/legal/practicum_offer/"
+        val userAgreementUrl = getString(R.string.user_agreement_url)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(userAgreementUrl))
 
         if (intent.resolveActivity(packageManager) != null) {
