@@ -15,6 +15,10 @@
         <!-- Hint text color. -->
         <item name="hintTextColor">@color/text_color</item>
 
+
+        <!-- Icon text color. -->
+        <item name="searchPageIcon">@color/icon_color</item>
+
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

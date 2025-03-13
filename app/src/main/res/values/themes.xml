@@ -13,6 +13,9 @@
 
         <!-- Hint text color. -->
         <item name="hintTextColor">@color/light_icons</item>
+
+        <!-- Icon text color. -->
+        <item name="searchPageIcon">@color/icon_color</item>
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>

@@ -3,6 +3,7 @@ package com.practicum.playlistmaker
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,7 +25,6 @@ class SettingsActivity: AppCompatActivity() {
     private lateinit var switchTheme: SwitchMaterial
     private lateinit var sharedPreferences: SharedPreferences
 
-    @SuppressLint("WrongViewCast", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /*enableEdgeToEdge()*/
@@ -34,7 +34,7 @@ class SettingsActivity: AppCompatActivity() {
 
         //Switch
         this.switchTheme = findViewById(R.id.switchTheme)
-        switchTheme.isChecked = false
+        //switchTheme.isChecked = false
 
         //Кнопка "Назад"
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -96,32 +96,27 @@ class SettingsActivity: AppCompatActivity() {
     }
 
     //Функция "Написать в поддержку"
-    @SuppressLint("QueryPermissionsNeeded")
     private fun writeToSupport() {
-        val supportIntent = Intent(Intent.ACTION_SENDTO)
-        // Тип данных
-        supportIntent.data = Uri.parse("mailto:")
+        val supportIntent = Intent(Intent.ACTION_SENDTO).apply {
+            // Тип данных
+            data = Uri.parse("mailto:")
 
-        supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("pfayzulaeva@gmail.com"))
-        supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject))
-        supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_body))
-
-        if (supportIntent.resolveActivity(packageManager) != null) {
-            startActivity(Intent.createChooser(supportIntent, "Отправить сообщение"))
-        } else {
-            Toast.makeText(this, getString(R.string.email_client_not_found), Toast.LENGTH_SHORT).show()
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("pfayzulaeva@gmail.com"))
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_subject))
+            putExtra(Intent.EXTRA_TEXT, getString(R.string.email_body))
         }
+
+        startActivity(Intent.createChooser(supportIntent, "Отправить сообщение"))
     }
 
     //Функция "Пользовательское соглашение"
-    @SuppressLint("QueryPermissionsNeeded")
     private fun openAgreement() {
         val userAgreementUrl = getString(R.string.user_agreement_url)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(userAgreementUrl))
 
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivity(intent)
-        } else {
+        try {
+            startActivity(Intent.createChooser(intent, getString(R.string.browser_not_found)))
+        } catch (e: Exception) {
             Toast.makeText(this, getString(R.string.browser_not_found), Toast.LENGTH_SHORT).show()
         }
     }

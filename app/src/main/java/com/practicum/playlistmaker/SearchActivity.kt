@@ -59,7 +59,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // TODO заглушка
+                searchText = s?.toString()
             }
         })
 

@@ -10,4 +10,6 @@
     <color name="switch_thumb_inactive_color">#AEAFB4</color>
     <color name="switch_track_active_color">#9FBBF3</color>
     <color name="switch_track_inactive_color">#E6E8EB</color>
+    <color name="icon_color">#818C99</color>
+
 </resources>
