@@ -28,7 +28,7 @@
     <EditText
         style="@style/SearchHintStyle"
         android:id="@+id/searchEditText"
-        android:minHeight="48dp"
+        android:minHeight="36dp"
         android:background="@drawable/edit_text_background"
         android:drawableStart="@drawable/search_page_icon"
         android:hint="@string/search"
@@ -39,12 +39,12 @@
 
     <ImageView
         android:id="@+id/clearIcon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_gravity="end|center_vertical"
         android:layout_marginEnd="12dp"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
-        app:tint="?attr/hintTextColor"
+        app:tint="?attr/clearIcon"
         android:visibility="gone" />
 
     </FrameLayout>

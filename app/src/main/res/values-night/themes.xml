@@ -19,6 +19,9 @@
         <!-- Icon text color. -->
         <item name="searchPageIcon">@color/icon_color</item>
 
+        <!-- Clear Icon color. -->
+        <item name="clearIcon">@color/clear_icon_color</item>
+
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

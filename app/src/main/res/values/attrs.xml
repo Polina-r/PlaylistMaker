@@ -2,4 +2,6 @@
 <resources>
     <attr name="hintTextColor" format="color"/>
     <attr name="searchPageIcon" format="color"/>
+    <attr name="cursor" format="color"/>
+    <attr name="clearIcon" format="color"/>
 </resources>

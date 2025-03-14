@@ -4,4 +4,5 @@
     <color name="child_pages_background">#1A1B22</color>
     <color name="light_icons">#FFFFFFFF</color>
     <color name="icon_color">#1A1B22</color>
+    <color name="clear_icon_color">#1A1B22</color>
 </resources>
