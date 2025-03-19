@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="hintTextColor" format="color"/>
+    <attr name="searchPageIcon" format="color"/>
+    <attr name="cursor" format="color"/>
+    <attr name="clearIcon" format="color"/>
+    <attr name="trackName" format="color"/>
+    <attr name="ArtistAndTime" format="color"/>
+</resources>
