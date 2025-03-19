@@ -28,7 +28,7 @@
     <EditText
         style="@style/SearchHintStyle"
         android:id="@+id/searchEditText"
-        android:minHeight="36dp"
+        android:minHeight="48dp"
         android:background="@drawable/edit_text_background"
         android:drawableStart="@drawable/search_page_icon"
         android:hint="@string/search"
@@ -48,4 +48,13 @@
         android:visibility="gone" />
 
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:clipToPadding="false"/>
+
 </LinearLayout>
