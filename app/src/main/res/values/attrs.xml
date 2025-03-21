@@ -4,4 +4,6 @@
     <attr name="searchPageIcon" format="color"/>
     <attr name="cursor" format="color"/>
     <attr name="clearIcon" format="color"/>
+    <attr name="trackName" format="color"/>
+    <attr name="ArtistAndTime" format="color"/>
 </resources>

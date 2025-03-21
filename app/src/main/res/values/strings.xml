@@ -13,9 +13,8 @@
     <string name="support">Написать в поддержку</string>
     <string name="user_agreement">Пользовательское соглашение</string>
 
-    <!--Сообщения для Toast-->
-    <string name="email_client_not_found">Почтовый клиент не найден</string>
-    <string name="browser_not_found">Не удаётся открыть браузер</string>
+    <!--Сообщения об ошибке-->
+    <string name="browser_not_found">Браузер не найден</string>
 
     <!--Текст для писем-->
     <string name="email_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
@@ -24,4 +23,9 @@
     <!--URL-->
     <string name="user_agreement_url">https://yandex.ru/legal/practicum_offer/</string>
     <string name="course_link">https://practicum.yandex.ru/profile/android-developer-plus/</string>
+
+    <!--TrackListText-->
+    <string name="track_name">Track Name</string>
+    <string name="artist_name">Artist Name</string>
+    <string name="track_time">3:45</string>
 </resources>
