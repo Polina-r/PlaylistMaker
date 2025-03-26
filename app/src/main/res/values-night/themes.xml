@@ -22,8 +22,8 @@
         <!-- Clear Icon color. -->
         <item name="clearIcon">@color/clear_icon_color</item>
 
-        <attr name="trackName" format="color"/>
-        <attr name="ArtistAndTime" format="color"/>
+        <!-- Track colors -->
+        <item name="trackName">@color/track_name_color</item>
 
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
