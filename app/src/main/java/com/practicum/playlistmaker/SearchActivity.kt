@@ -18,6 +18,7 @@ import com.google.android.material.internal.ViewUtils.hideKeyboard
 class SearchActivity : AppCompatActivity() {
 
     var searchText: String? = null
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var trackAdapter: TrackAdapter
     private val trackList = mutableListOf<Track>()
@@ -64,9 +65,11 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // TODO заглушка
+                searchText = s?.toString()
+                trackAdapter.filterList(searchText.orEmpty())
             }
         })
+
         //Список треков RecyclerView
         recyclerView = findViewById(R.id.recyclerView)
 
@@ -80,7 +83,6 @@ class SearchActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = trackAdapter
-
     }
 
     // Функция убрать клавиатуру

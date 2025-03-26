@@ -23,6 +23,7 @@
         <!-- Track colors -->
         <item name="trackName">@color/track_name_color</item>
 
+
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
