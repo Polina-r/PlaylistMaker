@@ -9,6 +9,7 @@ class TrackAdapter (private val trackList: List<Track>): RecyclerView.Adapter<Tr
 
     private var filteredTrackList: List<Track> = trackList
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_track, parent, false)
         return TrackViewHolder(itemView)

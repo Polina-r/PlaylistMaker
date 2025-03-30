@@ -35,7 +35,9 @@
         android:lines="1"
         android:inputType="text"
         android:focusableInTouchMode="true"
-        android:focusable="true"/>
+        android:focusable="true"
+        android:imeOptions="actionDone"
+        android:singleLine="true"/>
 
     <ImageView
         android:id="@+id/clearIcon"
