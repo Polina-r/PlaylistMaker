@@ -35,7 +35,9 @@
         android:lines="1"
         android:inputType="text"
         android:focusableInTouchMode="true"
-        android:focusable="true"/>
+        android:focusable="true"
+        android:imeOptions="actionDone"
+        android:singleLine="true"/>
 
     <ImageView
         android:id="@+id/clearIcon"
@@ -56,5 +58,8 @@
         android:layout_weight="1"
         android:padding="8dp"
         android:clipToPadding="false"/>
+
+    <include layout="@layout/no_results_placeholder" />
+    <include layout="@layout/server_error_placeholder" />
 
 </LinearLayout>
