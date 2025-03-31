@@ -59,4 +59,7 @@
         android:padding="8dp"
         android:clipToPadding="false"/>
 
+    <include layout="@layout/no_results_placeholder" />
+    <include layout="@layout/server_error_placeholder" />
+
 </LinearLayout>

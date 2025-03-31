@@ -28,4 +28,10 @@
     <string name="track_name">Track Name</string>
     <string name="artist_name">Artist Name</string>
     <string name="track_time">3:45</string>
+
+    <!--PlaceholderText-->
+    <string name="no_results_text">Ничего не нашлось</string>
+    <string name="retry_button_text">Обновить</string>
+    <string name="network_error_text">Проблемы со связью\n\nЗагрузка не удалась.Проверьте\nподключение к интернету</string>
+
 </resources>

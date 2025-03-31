@@ -7,8 +7,10 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -32,10 +34,15 @@ class SearchActivity : AppCompatActivity() {
     lateinit var songSearchApi: SongsearchApi
     private lateinit var queryInput: EditText
 
+    private lateinit var noResultsPlaceholder: LinearLayout
+    private lateinit var serverErrorPlaceholder: LinearLayout
+    private lateinit var retryButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /*enableEdgeToEdge()*/
         setContentView(R.layout.activity_search)
+
 
         songSearchApi = RetrofitClient.retrofit.create(SongsearchApi::class.java)
 
@@ -74,6 +81,9 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             searchEditText.setText("")
             hideKeyboard(searchEditText)
+            clearButton.visibility = View.GONE // Скрытие кнопки очистки
+            recyclerView.visibility = View.GONE // Скрытие списка треков
+            noResultsPlaceholder.visibility = View.GONE // Скрытие заглушки "Нет результатов"
         }
 
         searchEditText.addTextChangedListener(object : TextWatcher {
@@ -101,11 +111,18 @@ class SearchActivity : AppCompatActivity() {
         //trackList.add(Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"))
 
         trackAdapter = TrackAdapter(trackList)
-
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = trackAdapter
 
+        //Placeholder
+        noResultsPlaceholder = findViewById(R.id.noResultsPlaceholder)
+        serverErrorPlaceholder = findViewById(R.id.serverErrorPlaceholder)
+        retryButton = findViewById(R.id.retryButton)
 
+        retryButton.setOnClickListener {
+            val query = queryInput.text.toString()
+            searchTracks(query)
+        }
     }
 
     // Функция убрать клавиатуру
@@ -130,28 +147,48 @@ class SearchActivity : AppCompatActivity() {
 
 private fun searchTracks(query: String) {
 
-
     val call = songSearchApi.searchSongs(query)
     call.enqueue(object : Callback<ApiResponse> {
         override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-            if (response.isSuccessful) {
+             if (response.isSuccessful) {
                 val tracks = response.body()?.results ?: emptyList()
-                trackList.clear()
-                trackList.addAll(tracks) // Добавляем новые треки в список
-                trackAdapter.notifyDataSetChanged() // Обновляем адаптер
+                if (tracks.isEmpty()) {
+                    showNoResultsPlaceholder()
+                } else {
+                    trackList.clear()
+                    trackList.addAll(tracks)
+                    trackAdapter.notifyDataSetChanged()
+                    hidePlaceholders()
+                }
             } else {
-                showErrorPlaceholder() // Обработка ошибки
+                showErrorPlaceholder()
             }
         }
 
         override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-            // Обработка ошибки (показать плейсхолдер)
             showErrorPlaceholder()
         }
     })
 }
+    //Функция Placeholder serverError
     private fun showErrorPlaceholder() {
-        // Отображение плейсхолдера с ошибкой
+        hideKeyboard(queryInput)
+        findViewById<LinearLayout>(R.id.noResultsPlaceholder).visibility = View.GONE
+        findViewById<LinearLayout>(R.id.serverErrorPlaceholder).visibility = View.VISIBLE
+        findViewById<RecyclerView>(R.id.recyclerView).visibility = View.GONE
+    }
+
+    //Функция нет результатов
+    private fun showNoResultsPlaceholder() {
+        noResultsPlaceholder.visibility = View.VISIBLE
+        serverErrorPlaceholder.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+    }
+//Функция отображения RecyclerView
+    private fun hidePlaceholders() {
+        noResultsPlaceholder.visibility = View.GONE
+        serverErrorPlaceholder.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
     }
 
     fun formatDuration(ms: Long): String {
