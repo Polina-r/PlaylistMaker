@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -46,6 +47,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistory: SearchHistory
     private lateinit var historyRecyclerView: RecyclerView
     private lateinit var historyAdapter: TrackAdapter
+    private lateinit var scrollView: ScrollView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,6 +138,7 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter = TrackAdapter(trackList){ track ->
             openTrackPlayer(track)
             searchHistory.saveHistory(track)
+            updateHistory()
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = trackAdapter
@@ -163,6 +166,7 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = TrackAdapter(history) { track ->
             openTrackPlayer(track)
             searchHistory.saveHistory(track)
+            updateHistory()
        }
         historyAdapter.notifyDataSetChanged()
         historyRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -180,7 +184,15 @@ class SearchActivity : AppCompatActivity() {
             historyGroup.visibility = View.GONE
             historyAdapter.updateTrackList(emptyList())
         }
+        scrollView = findViewById(R.id.search_container);
+        scrollView.setVerticalScrollBarEnabled(true);
+        scrollView.setScrollbarFadingEnabled(false);
     }
+//Функция обновления истории поиска
+private fun updateHistory() {
+    val updatedHistory = searchHistory.getHistory()
+    historyAdapter.updateTrackList(updatedHistory)  // Обновляем адаптер с новым списком
+}
 
     // Функция открытия экрана плеера с выбранным треком
     private fun openTrackPlayer(track: Track) {
