@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -11,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -30,13 +32,20 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var trackAdapter: TrackAdapter
-    private val trackList = mutableListOf<Track>()
+    private var trackList = mutableListOf<Track>()
     lateinit var songSearchApi: SongsearchApi
     private lateinit var queryInput: EditText
 
     private lateinit var noResultsPlaceholder: LinearLayout
     private lateinit var serverErrorPlaceholder: LinearLayout
     private lateinit var retryButton: Button
+
+    private lateinit var historyGroup: LinearLayout
+    private lateinit var historyTitle: TextView
+    private lateinit var clearHistoryButton: Button
+    private lateinit var searchHistory: SearchHistory
+    private lateinit var historyRecyclerView: RecyclerView
+    private lateinit var historyAdapter: TrackAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +76,6 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-
-
         // Поисковая строка
         val searchEditText = findViewById<EditText>(R.id.searchEditText)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
@@ -84,6 +91,22 @@ class SearchActivity : AppCompatActivity() {
             clearButton.visibility = View.GONE // Скрытие кнопки очистки
             recyclerView.visibility = View.GONE // Скрытие списка треков
             noResultsPlaceholder.visibility = View.GONE // Скрытие заглушки "Нет результатов"
+
+            val history = searchHistory.getHistory()
+
+            // Выводим в лог, что там в истории
+            Log.d("SearchHistory", "History is: $history")
+
+            if (searchHistory.getHistory().isEmpty()) {
+                historyGroup.visibility = View.GONE // Скрытие истории, если нет данных
+            } else {
+                historyGroup.visibility = View.VISIBLE
+                historyTitle.visibility = View.VISIBLE
+                clearHistoryButton.visibility = View.VISIBLE
+                historyRecyclerView.visibility = View.VISIBLE
+                historyAdapter.updateTrackList(history) // Показываем историю, если есть данные
+            }
+
         }
 
         searchEditText.addTextChangedListener(object : TextWatcher {
@@ -110,7 +133,10 @@ class SearchActivity : AppCompatActivity() {
         //trackList.add(Track("Whole Lotta Love", "Led Zeppelin", "5:33", "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"))
         //trackList.add(Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"))
 
-        trackAdapter = TrackAdapter(trackList)
+        trackAdapter = TrackAdapter(trackList){ track ->
+            openTrackPlayer(track)
+            searchHistory.saveHistory(track)
+        }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = trackAdapter
 
@@ -123,8 +149,43 @@ class SearchActivity : AppCompatActivity() {
             val query = queryInput.text.toString()
             searchTracks(query)
         }
+      //История поиска
+        historyGroup = findViewById(R.id.historyGroup)
+        historyRecyclerView = findViewById(R.id.historyRecyclerView)
+        historyTitle = findViewById(R.id.historyTitle)
+        clearHistoryButton = findViewById(R.id.clearHistoryButton)
+
+        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        searchHistory = SearchHistory(sharedPreferences)
+
+        val history = searchHistory.getHistory()
+        Log.d("SearchHistory", "Loaded history: $history")
+        historyAdapter = TrackAdapter(history) { track ->
+            openTrackPlayer(track)
+            searchHistory.saveHistory(track)
+       }
+        historyAdapter.notifyDataSetChanged()
+        historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        historyRecyclerView.adapter = historyAdapter
+
+        if (history.isNotEmpty()) {
+            historyGroup.visibility = View.VISIBLE
+        } else {
+            historyGroup.visibility = View.GONE
+        }
+
+        // Обработка кнопки очистки истории
+        clearHistoryButton.setOnClickListener {
+            searchHistory.clearHistory()
+            historyGroup.visibility = View.GONE
+            historyAdapter.updateTrackList(emptyList())
+        }
     }
 
+    // Функция открытия экрана плеера с выбранным треком
+    private fun openTrackPlayer(track: Track) {
+
+    }
     // Функция убрать клавиатуру
     private fun hideKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -154,11 +215,21 @@ private fun searchTracks(query: String) {
                 val tracks = response.body()?.results ?: emptyList()
                 if (tracks.isEmpty()) {
                     showNoResultsPlaceholder()
+                    if (searchHistory.getHistory().isNotEmpty()) {
+                        historyGroup.visibility = View.VISIBLE
+                        historyRecyclerView.visibility = View.VISIBLE
+                        historyTitle.visibility = View.VISIBLE
+                        clearHistoryButton.visibility = View.VISIBLE
+                    }
                 } else {
                     trackList.clear()
                     trackList.addAll(tracks)
                     trackAdapter.notifyDataSetChanged()
                     hidePlaceholders()
+                    historyGroup.visibility = View.GONE
+                    historyRecyclerView.visibility = View.GONE
+                    historyTitle.visibility = View.GONE
+                    clearHistoryButton.visibility = View.GONE
                 }
             } else {
                 showErrorPlaceholder()

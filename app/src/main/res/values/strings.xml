@@ -34,4 +34,8 @@
     <string name="retry_button_text">Обновить</string>
     <string name="network_error_text">Проблемы со связью\n\nЗагрузка не удалась.Проверьте\nподключение к интернету</string>
 
+    <!--Historysearch-->
+    <string name="search_history">Вы искали</string>
+    <string name="clean_history">Очистить историю</string>
+
 </resources>

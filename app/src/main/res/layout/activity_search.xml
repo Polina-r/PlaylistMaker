@@ -51,6 +51,43 @@
 
     </FrameLayout>
 
+    <LinearLayout
+        android:id="@+id/historyGroup"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="34dp">
+
+        <TextView
+            android:id="@+id/historyTitle"
+            style="@style/HistoryTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/search_history" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/historyRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:clipToPadding="false"/>
+
+    <Button
+        style="@style/RetryButtonStyle"
+        android:id="@+id/clearHistoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/clean_history"
+        android:layout_margin="16dp"
+        app:cornerRadius="27dp"
+        android:backgroundTint="?attr/colorOnSecondary"/>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
