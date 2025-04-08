@@ -28,6 +28,13 @@
     <string name="track_name">Track Name</string>
     <string name="artist_name">Artist Name</string>
     <string name="track_time">3:45</string>
+    <string name="collection">Collection Name</string>
+    <string name="release_date_year">1965</string>
+    <string name="genre">Rock</string>
+    <string name="country_name">Великобритания</string>
+    <string name="progress_time">3:45</string>
+
+
 
     <!--PlaceholderText-->
     <string name="no_results_text">Ничего не нашлось</string>
@@ -37,5 +44,22 @@
     <!--Historysearch-->
     <string name="search_history">Вы искали</string>
     <string name="clean_history">Очистить историю</string>
+
+    <!--Content description-->
+    <string name="button_back">Кнопка назад</string>
+    <string name="add_to_playlist">Добавить в плэйлист</string>
+
+    <!--Track description-->
+    <string name="collection_name">Альбом</string>
+    <string name="track_time_millis">Длительность</string>
+    <string name="release_date">Год</string>
+    <string name="primary_genre_name">Жанр</string>
+    <string name="play_pause_button">Кнопка play/pause</string>
+    <string name="favorites">Добавить в избранное</string>
+    <string name="country">Cтрана</string>
+    <string name="cover_image">Обложка</string>
+
+
+
 
 </resources>

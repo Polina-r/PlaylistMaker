@@ -1,18 +1,30 @@
 package com.practicum.playlistmaker
 
+import android.os.Parcelable
+import androidx.versionedparcelable.VersionedParcelize
 import com.google.gson.annotations.SerializedName
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import kotlinx.parcelize.Parcelize
 
-class Track (
+@Parcelize
+data class Track (
     @SerializedName("trackId") val trackId: Int,   //ID трека
     @SerializedName("trackName")  val trackName: String, // Название композиции
     @SerializedName("artistName") val artistName: String, // Имя исполнителя
-                                  //val trackTime: String, // Продолжительность трека
+    // val trackTime: String, // Продолжительность трека
     @SerializedName("trackTimeMillis") val trackTimeMillis: Long, // Продолжительность в милисекундах
-    @SerializedName("artworkUrl100") val artworkUrl100: String // Ссылка на изображение обложки
-    )
+    @SerializedName("artworkUrl100") val artworkUrl100: String, // Ссылка на изображение обложки
+    @SerializedName("collectionName") val collectionName: String?, //Название альбома
+    @SerializedName("releaseDate") val releaseDate: String?, //Год релиза трека
+    @SerializedName("primaryGenreName") val primaryGenreName: String?, //Жанр трека
+    @SerializedName("country") val country: String? //Страна исполнителя
+
+): Parcelable {
+    fun getCoverArtwork(): String {
+        return artworkUrl100.replaceAfterLast("/", "512x512bb.jpg")
+    }
+
+    fun getReleaseYear(): String? = releaseDate?.take(4)
+}
 
 
 

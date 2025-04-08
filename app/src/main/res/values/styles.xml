@@ -117,4 +117,40 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    //Library track name text style
+    <style name="trackNameTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    //Library track artist name text style
+    <style name="trackArtistNameTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    //Library track description tittle text style
+    <style name="trackDescriptionTittleTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">#AEAFB4</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    //Library track description text style
+    <style name="trackDescriptionTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>

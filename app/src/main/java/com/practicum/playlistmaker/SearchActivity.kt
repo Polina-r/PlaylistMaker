@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -187,6 +188,7 @@ class SearchActivity : AppCompatActivity() {
         scrollView = findViewById(R.id.search_container);
         scrollView.setVerticalScrollBarEnabled(true);
         scrollView.setScrollbarFadingEnabled(false);
+
     }
 //Функция обновления истории поиска
 private fun updateHistory() {
@@ -196,6 +198,10 @@ private fun updateHistory() {
 
     // Функция открытия экрана плеера с выбранным треком
     private fun openTrackPlayer(track: Track) {
+        Log.d("SearchActivity", "Opening track: ${track.trackName} by ${track.artistName}")
+        val intent = Intent(this, LibraryActivity::class.java)
+        intent.putExtra("track", track)
+        startActivity(intent)
 
     }
     // Функция убрать клавиатуру
@@ -277,6 +283,7 @@ private fun searchTracks(query: String) {
     fun formatDuration(ms: Long): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(ms)
     }
+
 }
 
 
