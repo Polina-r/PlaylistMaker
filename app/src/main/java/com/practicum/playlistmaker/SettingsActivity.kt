@@ -41,42 +41,6 @@ class SettingsActivity: AppCompatActivity() {
             App.instance.switchTheme(checked)
         }
 
-       // sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
-
-        //val isDarkModeEnabled = sharedPreferences.getBoolean("darkMode", false)
-
-        //if (isDarkModeEnabled) {
-            //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        //} else {
-            //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        //}
-
-        //val app = applicationContext as App
-
-        //switchTheme = findViewById(R.id.switchTheme)
-        //switchTheme.isChecked = app.darkTheme
-
-        //switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            //app.switchTheme(isChecked)
-       // }
-
-        // Инициализируем Switch после того, как загрузили layout
-       // switchTheme = findViewById(R.id.switchTheme)
-        //switchTheme.isChecked = isDarkModeEnabled
-
-        // Реализация переключения темы
-            //switchTheme.setOnCheckedChangeListener { _, isChecked ->
-           // if (isChecked) {
-                //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            //} else {
-               // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-           // }
-
-           // val editor = sharedPreferences.edit()
-           // editor.putBoolean("darkMode", isChecked)
-            //editor.apply()
-        //}
-
         // Кнопка "Назад"
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)

@@ -25,14 +25,12 @@ class App : Application() {
         sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
         darkTheme = sharedPreferences.getBoolean("darkTheme", false)
 
-        Log.d("AppTheme", "Loaded darkTheme from SharedPreferences: $darkTheme")
 
         applyCurrentTheme()
     }
 
     private fun applyCurrentTheme() {
         // Лог, чтобы убедиться, что метод вызывается
-        Log.d("AppTheme", "applyCurrentTheme: darkTheme: $darkTheme")
         AppCompatDelegate.setDefaultNightMode(
             if (darkTheme) {
                 AppCompatDelegate.MODE_NIGHT_YES
@@ -44,19 +42,10 @@ class App : Application() {
 
     fun switchTheme(darkThemeEnabled: Boolean) {
         darkTheme = darkThemeEnabled
-        Log.d("AppTheme", "switchTheme called. darkTheme: $darkThemeEnabled")
 
         sharedPreferences.edit().putBoolean("darkTheme", darkThemeEnabled).apply()
 
-            //AppCompatDelegate.setDefaultNightMode(
-            //if (darkThemeEnabled) {
-                //AppCompatDelegate.MODE_NIGHT_YES
-            //} else {
-                //AppCompatDelegate.MODE_NIGHT_NO
-            //}
-        //)
         applyCurrentTheme()
-        Log.d("AppTheme", "Theme applied. darkTheme: $darkThemeEnabled")
 
     }
 }
