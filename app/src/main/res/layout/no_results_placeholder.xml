@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/noResultsPlaceholder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/placeholderImage"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/ic_no_results"
+        android:layout_marginTop="210dp"/>
+
+    <TextView
+        style="@style/PlaceholderTextStyle"
+        android:id="@+id/placeholderText"
+        android:text="@string/no_results_text"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

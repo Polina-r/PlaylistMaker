@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Switch
 import android.widget.Toast
@@ -24,43 +25,20 @@ import com.google.android.material.textview.MaterialTextView
 class SettingsActivity: AppCompatActivity() {
 
     private lateinit var switchTheme: SwitchMaterial
-    private lateinit var sharedPreferences: SharedPreferences
+    //private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Получаем значение из SharedPreferences до установки контента
-        this.sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
-
-        // Проверяем, какую тему сохранить в SharedPreferences
-        val isDarkModeEnabled = sharedPreferences.getBoolean("darkMode", false)
-
-        // Устанавливаем правильную тему перед загрузкой контента
-        if (isDarkModeEnabled) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
-        // Теперь устанавливаем layout
         setContentView(R.layout.activity_settings)
 
-        // Инициализируем Switch после того, как загрузили layout
-        this.switchTheme = findViewById(R.id.switchTheme)
-        switchTheme.isChecked = isDarkModeEnabled
+        switchTheme = findViewById(R.id.switchTheme)
+        Log.d("AppTheme", "SettingsActivity onCreate: darkTheme: ${App.instance.darkTheme}")
+        switchTheme.isChecked = App.instance.darkTheme
 
-        // Реализация переключения темы
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-
-            // Сохраняем состояние переключателя в SharedPreferences
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("darkMode", isChecked)
-            editor.apply()
+        switchTheme.setOnCheckedChangeListener { _, checked ->
+            Log.d("AppTheme", "Switch checked: $checked")
+            App.instance.switchTheme(checked)
         }
 
         // Кнопка "Назад"
