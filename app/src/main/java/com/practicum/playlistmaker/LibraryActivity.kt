@@ -3,28 +3,38 @@ package com.practicum.playlistmaker
 import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.TimeZone
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.google.android.material.internal.ViewUtils.dpToPx
 import java.util.Locale
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import android.os.Handler
 
 class LibraryActivity : AppCompatActivity() {
 
     private lateinit var track: Track
 
+    private var mediaPlayer: MediaPlayer? = null
+    private var isPlaying = false
+    private lateinit var playPauseButton: ImageButton
+    private lateinit var playbackTimeTextView: TextView
+    private var handler: Handler = Handler(Looper.getMainLooper())
+
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             /*enableEdgeToEdge()*/
             setContentView(R.layout.activity_library)
+
+            playbackTimeTextView = findViewById(R.id.playbackTime)
+
 
             // Получаем трек
             @Suppress("DEPRECATION")
@@ -91,6 +101,17 @@ class LibraryActivity : AppCompatActivity() {
             .centerCrop()
             .transform(RoundedCorners(cornerRadiusPx))
             .into(coverImageView)
+
+            //Кнопки
+        playPauseButton = findViewById(R.id.playPauseButton)
+        playbackTimeTextView = findViewById(R.id.playbackTime)
+
+        playPauseButton.setOnClickListener {
+            handlePlayPause()
+        }
+
+        playbackTimeTextView.text = formatTrackTime(0)
+        playbackTimeTextView.visibility = View.VISIBLE
     }
 
     private fun dpToPx(dp: Int, context: Context): Int {
@@ -127,6 +148,83 @@ class LibraryActivity : AppCompatActivity() {
         } ?: return
 
         setupUI()  // Перерисовываем UI
+    }
+
+    private fun handlePlayPause() {
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer().apply {
+                setDataSource(track.previewUrl)
+                prepare()
+                setOnCompletionListener {
+                    this@LibraryActivity.isPlaying = false
+                    playPauseButton.setImageResource(R.drawable.button_play)
+                    playbackTimeTextView.text = "00:00"
+                    handler.removeCallbacksAndMessages(null)
+                }
+            }
+        }
+
+        if (isPlaying) {
+            mediaPlayer?.pause()
+            playPauseButton.setImageResource(R.drawable.button_play)
+            handler.removeCallbacksAndMessages(null)
+            //playbackTimeTextView.visibility = View.GONE
+        } else {
+            if (mediaPlayer?.currentPosition == mediaPlayer?.duration) {
+                mediaPlayer?.seekTo(0)
+            }
+
+            mediaPlayer?.start()
+            playPauseButton.setImageResource(R.drawable.button_pause)
+
+            //playbackTimeTextView.text = formatTrackTime(mediaPlayer?.currentPosition?.toLong() ?: 0L)
+            val currentPos = mediaPlayer?.currentPosition?.toLong() ?: 0L
+            playbackTimeTextView.text = formatTrackTime(currentPos)
+
+            updatePlaybackTime()
+        }
+
+        isPlaying = !isPlaying
+    }
+
+    private fun updatePlaybackTime() {
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                mediaPlayer?.let {
+                    val currentPosition = it.currentPosition
+                    playbackTimeTextView.text = formatTrackTime(currentPosition.toLong())
+                    if (isPlaying) {
+                        handler.postDelayed(this, 500)
+                    }
+                }
+            }
+        }, 1000)
+    }
+
+    override fun onBackPressed() {
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
+        handler.removeCallbacksAndMessages(null)
+        isPlaying = false
+        super.onBackPressed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (isPlaying) {
+            mediaPlayer?.pause()
+            playPauseButton.setImageResource(R.drawable.button_play)
+            handler.removeCallbacksAndMessages(null)
+            isPlaying = false
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.release()
+        mediaPlayer = null
+        handler.removeCallbacksAndMessages(null)
     }
 }
 

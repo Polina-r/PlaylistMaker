@@ -23,6 +23,9 @@
         <!-- Track colors -->
         <item name="trackName">@color/track_name_color</item>
 
+        <!-- Progress bar -->
+        <item name="progress_tint">@color/progress_tint</item>
+
 
 
         <!-- Customize your light theme here. -->

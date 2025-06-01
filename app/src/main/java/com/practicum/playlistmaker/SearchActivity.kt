@@ -3,6 +3,8 @@ package com.practicum.playlistmaker
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -50,11 +53,18 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var scrollView: ScrollView
 
+    private var searchHandler: Handler = Handler(Looper.getMainLooper())
+    private var searchRunnable: Runnable? = null
+    private val SEARCH_DELAY = 2000L
+
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /*enableEdgeToEdge()*/
         setContentView(R.layout.activity_search)
 
+        progressBar = findViewById(R.id.progressBar)
 
         songSearchApi = RetrofitClient.retrofit.create(SongsearchApi::class.java)
 
@@ -114,8 +124,19 @@ class SearchActivity : AppCompatActivity() {
 
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-                    // TODO заглушка
+                //clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                val query = s.toString()
+                clearButton.visibility = if (query.isEmpty()) View.GONE else View.VISIBLE
+
+                searchRunnable?.let { searchHandler.removeCallbacks(it) }
+
+
+                searchRunnable = Runnable {
+                    if (query.isNotEmpty()) {
+                        searchTracks(query)
+                    }
+                }
+                searchHandler.postDelayed(searchRunnable!!, SEARCH_DELAY)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -225,11 +246,14 @@ private fun updateHistory() {
     // Логика выполнения поискового запроса
 
 private fun searchTracks(query: String) {
+    progressBar.visibility = View.VISIBLE
 
     val call = songSearchApi.searchSongs(query)
     call.enqueue(object : Callback<ApiResponse> {
         override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-             if (response.isSuccessful) {
+            progressBar.visibility = View.GONE
+
+            if (response.isSuccessful) {
                 val tracks = response.body()?.results ?: emptyList()
                 if (tracks.isEmpty()) {
                     showNoResultsPlaceholder()
@@ -255,6 +279,7 @@ private fun searchTracks(query: String) {
         }
 
         override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+            progressBar.visibility = View.GONE
             showErrorPlaceholder()
         }
     })
