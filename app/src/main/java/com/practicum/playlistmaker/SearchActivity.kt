@@ -133,7 +133,10 @@ class SearchActivity : AppCompatActivity() {
 
                 searchRunnable = Runnable {
                     if (query.isNotEmpty()) {
+                        historyGroup.visibility = View.GONE
                         searchTracks(query)
+                    } else {
+                        updateHistory()
                     }
                 }
                 searchHandler.postDelayed(searchRunnable!!, SEARCH_DELAY)
@@ -243,26 +246,38 @@ private fun updateHistory() {
         searchText = savedInstanceState.getString("search_text")
     }
 
+    // Функция для управления UI при поиске
+    private fun showLoadingState(isLoading: Boolean) {
+        progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        recyclerView.visibility = if (isLoading) View.GONE else View.VISIBLE
+        noResultsPlaceholder.visibility = View.GONE
+        serverErrorPlaceholder.visibility = View.GONE
+        historyGroup.visibility = View.GONE
+        historyRecyclerView.visibility = View.GONE
+        historyTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+    }
     // Логика выполнения поискового запроса
 
 private fun searchTracks(query: String) {
-    progressBar.visibility = View.VISIBLE
+    hideKeyboard(queryInput)
+    showLoadingState(true)
 
     val call = songSearchApi.searchSongs(query)
     call.enqueue(object : Callback<ApiResponse> {
         override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-            progressBar.visibility = View.GONE
+            showLoadingState(false)
 
             if (response.isSuccessful) {
                 val tracks = response.body()?.results ?: emptyList()
                 if (tracks.isEmpty()) {
                     showNoResultsPlaceholder()
-                    if (searchHistory.getHistory().isNotEmpty()) {
-                        historyGroup.visibility = View.VISIBLE
-                        historyRecyclerView.visibility = View.VISIBLE
-                        historyTitle.visibility = View.VISIBLE
-                        clearHistoryButton.visibility = View.VISIBLE
-                    }
+                        //if (searchHistory.getHistory().isNotEmpty()) {
+                        //historyGroup.visibility = View.VISIBLE
+                        //historyRecyclerView.visibility = View.VISIBLE
+                        //historyTitle.visibility = View.VISIBLE
+                        //clearHistoryButton.visibility = View.VISIBLE
+                    //}
                 } else {
                     trackList.clear()
                     trackList.addAll(tracks)
@@ -297,13 +312,21 @@ private fun searchTracks(query: String) {
         noResultsPlaceholder.visibility = View.VISIBLE
         serverErrorPlaceholder.visibility = View.GONE
         recyclerView.visibility = View.GONE
+        historyGroup.visibility = View.GONE
+        historyRecyclerView.visibility = View.GONE
+        historyTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
     }
 //Функция отображения RecyclerView
-    private fun hidePlaceholders() {
-        noResultsPlaceholder.visibility = View.GONE
-        serverErrorPlaceholder.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
-    }
+private fun hidePlaceholders() {
+    noResultsPlaceholder.visibility = View.GONE
+    serverErrorPlaceholder.visibility = View.GONE
+    recyclerView.visibility = View.VISIBLE
+    historyGroup.visibility = View.GONE
+    historyRecyclerView.visibility = View.GONE
+    historyTitle.visibility = View.GONE
+    clearHistoryButton.visibility = View.GONE
+}
 
     fun formatDuration(ms: Long): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(ms)
