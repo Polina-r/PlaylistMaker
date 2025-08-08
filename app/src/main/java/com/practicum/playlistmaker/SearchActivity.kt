@@ -3,6 +3,8 @@ package com.practicum.playlistmaker
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -50,11 +53,18 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var scrollView: ScrollView
 
+    private var searchHandler: Handler = Handler(Looper.getMainLooper())
+    private var searchRunnable: Runnable? = null
+    private val SEARCH_DELAY = 2000L
+
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /*enableEdgeToEdge()*/
         setContentView(R.layout.activity_search)
 
+        progressBar = findViewById(R.id.progressBar)
 
         songSearchApi = RetrofitClient.retrofit.create(SongsearchApi::class.java)
 
@@ -114,8 +124,22 @@ class SearchActivity : AppCompatActivity() {
 
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-                    // TODO заглушка
+                //clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                val query = s.toString()
+                clearButton.visibility = if (query.isEmpty()) View.GONE else View.VISIBLE
+
+                searchRunnable?.let { searchHandler.removeCallbacks(it) }
+
+
+                searchRunnable = Runnable {
+                    if (query.isNotEmpty()) {
+                        historyGroup.visibility = View.GONE
+                        searchTracks(query)
+                    } else {
+                        updateHistory()
+                    }
+                }
+                searchHandler.postDelayed(searchRunnable!!, SEARCH_DELAY)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -222,23 +246,38 @@ private fun updateHistory() {
         searchText = savedInstanceState.getString("search_text")
     }
 
+    // Функция для управления UI при поиске
+    private fun showLoadingState(isLoading: Boolean) {
+        progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        recyclerView.visibility = if (isLoading) View.GONE else View.VISIBLE
+        noResultsPlaceholder.visibility = View.GONE
+        serverErrorPlaceholder.visibility = View.GONE
+        historyGroup.visibility = View.GONE
+        historyRecyclerView.visibility = View.GONE
+        historyTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+    }
     // Логика выполнения поискового запроса
 
 private fun searchTracks(query: String) {
+    hideKeyboard(queryInput)
+    showLoadingState(true)
 
     val call = songSearchApi.searchSongs(query)
     call.enqueue(object : Callback<ApiResponse> {
         override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-             if (response.isSuccessful) {
+            showLoadingState(false)
+
+            if (response.isSuccessful) {
                 val tracks = response.body()?.results ?: emptyList()
                 if (tracks.isEmpty()) {
                     showNoResultsPlaceholder()
-                    if (searchHistory.getHistory().isNotEmpty()) {
-                        historyGroup.visibility = View.VISIBLE
-                        historyRecyclerView.visibility = View.VISIBLE
-                        historyTitle.visibility = View.VISIBLE
-                        clearHistoryButton.visibility = View.VISIBLE
-                    }
+                        //if (searchHistory.getHistory().isNotEmpty()) {
+                        //historyGroup.visibility = View.VISIBLE
+                        //historyRecyclerView.visibility = View.VISIBLE
+                        //historyTitle.visibility = View.VISIBLE
+                        //clearHistoryButton.visibility = View.VISIBLE
+                    //}
                 } else {
                     trackList.clear()
                     trackList.addAll(tracks)
@@ -255,6 +294,7 @@ private fun searchTracks(query: String) {
         }
 
         override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+            progressBar.visibility = View.GONE
             showErrorPlaceholder()
         }
     })
@@ -272,13 +312,21 @@ private fun searchTracks(query: String) {
         noResultsPlaceholder.visibility = View.VISIBLE
         serverErrorPlaceholder.visibility = View.GONE
         recyclerView.visibility = View.GONE
+        historyGroup.visibility = View.GONE
+        historyRecyclerView.visibility = View.GONE
+        historyTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
     }
 //Функция отображения RecyclerView
-    private fun hidePlaceholders() {
-        noResultsPlaceholder.visibility = View.GONE
-        serverErrorPlaceholder.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
-    }
+private fun hidePlaceholders() {
+    noResultsPlaceholder.visibility = View.GONE
+    serverErrorPlaceholder.visibility = View.GONE
+    recyclerView.visibility = View.VISIBLE
+    historyGroup.visibility = View.GONE
+    historyRecyclerView.visibility = View.GONE
+    historyTitle.visibility = View.GONE
+    clearHistoryButton.visibility = View.GONE
+}
 
     fun formatDuration(ms: Long): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(ms)

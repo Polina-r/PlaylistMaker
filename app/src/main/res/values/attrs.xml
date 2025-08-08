@@ -6,4 +6,5 @@
     <attr name="clearIcon" format="color"/>
     <attr name="trackName" format="color"/>
     <attr name="ArtistAndTime" format="color"/>
+    <attr name="progress_tint" format="color"/>
 </resources>
