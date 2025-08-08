@@ -16,7 +16,7 @@
         android:theme="@style/Base.Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name="SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Base.Theme.PlaylistMaker">
@@ -33,14 +33,14 @@
         </activity>
 
         <activity
-            android:name="SearchActivity"
+            android:name=".ui.search.SearchActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Base.Theme.PlaylistMaker">
         </activity>
 
         <activity
-            android:name="LibraryActivity"
+            android:name=".ui.library.LibraryActivity"
             android:exported="true">
         </activity>
 
