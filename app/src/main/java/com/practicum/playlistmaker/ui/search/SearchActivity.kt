@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -18,27 +18,31 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.internal.ViewUtils.hideKeyboard
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.practicum.playlistmaker.ui.library.LibraryActivity
+import com.practicum.playlistmaker.R
+//import com.practicum.playlistmaker.data.storage.SearchHistoryStorage
+import com.practicum.playlistmaker.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
+import com.practicum.playlistmaker.Creator
+import com.practicum.playlistmaker.domain.api.TrackInteractor
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchActivity : AppCompatActivity() {
-
+    private val interactor: TrackInteractor by lazy { Creator.trackInteractor }
     var searchText: String? = null
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var trackAdapter: TrackAdapter
     private var trackList = mutableListOf<Track>()
-    lateinit var songSearchApi: SongsearchApi
+    //lateinit var songSearchApi: SongsearchApi
     private lateinit var queryInput: EditText
 
     private lateinit var noResultsPlaceholder: LinearLayout
@@ -48,7 +52,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyGroup: LinearLayout
     private lateinit var historyTitle: TextView
     private lateinit var clearHistoryButton: Button
-    private lateinit var searchHistory: SearchHistory
+    //private lateinit var searchHistory: SearchHistoryStorage
     private lateinit var historyRecyclerView: RecyclerView
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var scrollView: ScrollView
@@ -66,7 +70,7 @@ class SearchActivity : AppCompatActivity() {
 
         progressBar = findViewById(R.id.progressBar)
 
-        songSearchApi = RetrofitClient.retrofit.create(SongsearchApi::class.java)
+        //songSearchApi = RetrofitClient.retrofit.create(SongsearchApi::class.java)
 
         queryInput = findViewById(R.id.searchEditText)
 
@@ -105,12 +109,12 @@ class SearchActivity : AppCompatActivity() {
             recyclerView.visibility = View.GONE // Скрытие списка треков
             noResultsPlaceholder.visibility = View.GONE // Скрытие заглушки "Нет результатов"
 
-            val history = searchHistory.getHistory()
+            //val history = searchHistory.getHistory()
 
             // Выводим в лог, что там в истории
-            Log.d("SearchHistory", "History is: $history")
+            //Log.d("SearchHistory", "History is: $history")
 
-            if (searchHistory.getHistory().isEmpty()) {
+            /*if (searchHistory.getHistory().isEmpty()) {
                 historyGroup.visibility = View.GONE // Скрытие истории, если нет данных
             } else {
                 historyGroup.visibility = View.VISIBLE
@@ -118,8 +122,8 @@ class SearchActivity : AppCompatActivity() {
                 clearHistoryButton.visibility = View.VISIBLE
                 historyRecyclerView.visibility = View.VISIBLE
                 historyAdapter.updateTrackList(history) // Показываем историю, если есть данные
-            }
-
+            }*/
+            updateHistory()
         }
 
         searchEditText.addTextChangedListener(object : TextWatcher {
@@ -160,9 +164,9 @@ class SearchActivity : AppCompatActivity() {
         //trackList.add(Track("Whole Lotta Love", "Led Zeppelin", "5:33", "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"))
         //trackList.add(Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"))
 
-        trackAdapter = TrackAdapter(trackList){ track ->
+        trackAdapter = TrackAdapter(trackList) { track ->
             openTrackPlayer(track)
-            searchHistory.saveHistory(track)
+            interactor.saveToHistory(track)
             updateHistory()
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -183,8 +187,22 @@ class SearchActivity : AppCompatActivity() {
         historyTitle = findViewById(R.id.historyTitle)
         clearHistoryButton = findViewById(R.id.clearHistoryButton)
 
-        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
-        searchHistory = SearchHistory(sharedPreferences)
+        historyAdapter = TrackAdapter(emptyList()) { track ->
+            openTrackPlayer(track)
+            interactor.saveToHistory(track)
+            updateHistory()
+        }
+        historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        historyRecyclerView.adapter = historyAdapter
+
+        updateHistory()
+        clearHistoryButton.setOnClickListener {
+            interactor.clearHistory()
+            updateHistory()
+        }
+
+        /*val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        searchHistory = SearchHistoryStorage(sharedPreferences)
 
         val history = searchHistory.getHistory()
         Log.d("SearchHistory", "Loaded history: $history")
@@ -208,16 +226,32 @@ class SearchActivity : AppCompatActivity() {
             searchHistory.clearHistory()
             historyGroup.visibility = View.GONE
             historyAdapter.updateTrackList(emptyList())
-        }
+        }*/
         scrollView = findViewById(R.id.search_container);
         scrollView.setVerticalScrollBarEnabled(true);
         scrollView.setScrollbarFadingEnabled(false);
 
     }
 //Функция обновления истории поиска
-private fun updateHistory() {
+/*private fun updateHistory() {
     val updatedHistory = searchHistory.getHistory()
     historyAdapter.updateTrackList(updatedHistory)  // Обновляем адаптер с новым списком
+}*/
+private fun updateHistory() {
+    val updated = interactor.getHistory()
+    historyAdapter.updateTrackList(updated)
+
+    if (updated.isEmpty()) {
+        historyGroup.visibility = View.GONE
+        historyTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyRecyclerView.visibility = View.GONE
+    } else {
+        historyGroup.visibility = View.VISIBLE
+        historyTitle.visibility = View.VISIBLE
+        clearHistoryButton.visibility = View.VISIBLE
+        historyRecyclerView.visibility = View.VISIBLE
+    }
 }
 
     // Функция открытия экрана плеера с выбранным треком
@@ -263,7 +297,7 @@ private fun searchTracks(query: String) {
     hideKeyboard(queryInput)
     showLoadingState(true)
 
-    val call = songSearchApi.searchSongs(query)
+    /*val call = songSearchApi.searchSongs(query)
     call.enqueue(object : Callback<ApiResponse> {
         override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
             showLoadingState(false)
@@ -297,8 +331,25 @@ private fun searchTracks(query: String) {
             progressBar.visibility = View.GONE
             showErrorPlaceholder()
         }
-    })
+    })*/
+    lifecycleScope.launch {
+        val tracks = withContext(Dispatchers.IO) {
+            interactor.search(query)
+        }
+
+        showLoadingState(false)
+
+        if (tracks.isEmpty()) {
+            showNoResultsPlaceholder()
+        } else {
+            trackList.clear()
+            trackList.addAll(tracks)
+            trackAdapter.notifyDataSetChanged()
+            hidePlaceholders()
+        }
+    }
 }
+
     //Функция Placeholder serverError
     private fun showErrorPlaceholder() {
         hideKeyboard(queryInput)

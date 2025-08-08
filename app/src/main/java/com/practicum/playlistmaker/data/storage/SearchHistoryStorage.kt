@@ -1,22 +1,23 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.data.storage
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
-class SearchHistory(private val sharedPreferences: SharedPreferences) {
+import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.domain.api.SearchHistoryRepository
+class SearchHistoryStorage(private val sharedPreferences: SharedPreferences) : SearchHistoryRepository {
     private val gson = Gson()
     private val maxHistorySize = 10
 
     // Загружаем историю поиска
-    fun getHistory(): List<Track> {
+    override fun getHistory(): List<Track> {
         val json = sharedPreferences.getString("searchHistory", "[]")
         val type = object : TypeToken<List<Track>>() {}.type
         return gson.fromJson(json, type)
     }
 
     // Сохраняем историю поиска
-    fun saveHistory(track: Track) {
+    override fun saveHistory(track: Track) {
         val history = getHistory().toMutableList()
 
         // Убираем дубликаты и перемещаем трек на верхний уровень
@@ -42,7 +43,7 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
     }
 
     // Очищаем историю
-    fun clearHistory() {
+    override fun clearHistory() {
         sharedPreferences.edit().remove("searchHistory").apply()
     }
 }
